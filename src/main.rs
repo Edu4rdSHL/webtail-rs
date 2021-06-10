@@ -37,7 +37,7 @@ fn main() {
         .par_iter()
         .map(|(file, port)| {
             if Path::new(&file).exists() {
-                println!("=> Watching file {} in port {}\n", file, port);
+                println!("\n=> Watching file {} in http://127.0.0.1:{}", file, port);
                 let error = rocket::custom(
                     Config::build(Environment::Production)
                         .log_level(LoggingLevel::Off)
