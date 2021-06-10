@@ -1,4 +1,4 @@
-use std::{collections::HashMap, u16};
+use std::{collections::HashMap, path::Path, u16};
 
 use webtail_rs::{
     structs::{File, State},
@@ -36,23 +36,30 @@ fn main() {
     input_files
         .par_iter()
         .map(|(file, port)| {
-            println!("=> Watching file {} in port {}\n", file, port);
-            let error = rocket::custom(
-                Config::build(Environment::Production)
-                    .log_level(LoggingLevel::Off)
-                    .port(port.to_owned())
-                    .unwrap(),
-            )
-            .manage(File {
-                data: String::new(),
-                name: file.clone(),
-                state: State::Write,
-                delay: args.delay,
-            })
-            .mount("/", routes![updates])
-            .mount("/", StaticFiles::from("static"))
-            .launch();
-            eprintln!("Launch failed! Error: {}", error);
+            if Path::new(&file).exists() {
+                println!("=> Watching file {} in port {}\n", file, port);
+                let error = rocket::custom(
+                    Config::build(Environment::Production)
+                        .log_level(LoggingLevel::Off)
+                        .port(port.to_owned())
+                        .unwrap(),
+                )
+                .manage(File {
+                    data: String::new(),
+                    name: file.clone(),
+                    state: State::Write,
+                    delay: args.delay,
+                })
+                .mount("/", routes![updates])
+                .mount("/", StaticFiles::from("static"))
+                .launch();
+                eprintln!(
+                    "Launch failed for file {} in port {}! Error: {}",
+                    file, port, error
+                );
+            } else {
+                eprintln!("Ignoring file {} because doesn't exists.", file)
+            }
         })
         .collect::<Vec<()>>();
 }
