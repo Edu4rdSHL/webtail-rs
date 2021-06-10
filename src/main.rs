@@ -37,7 +37,10 @@ fn main() {
         .par_iter()
         .map(|(file, port)| {
             if Path::new(&file).exists() {
-                println!("\n=> Watching file {} in http://127.0.0.1:{}", file, port);
+                println!(
+                    "\n=> Watching file \"{}\" in http://127.0.0.1:{}",
+                    file, port
+                );
                 let error = rocket::custom(
                     Config::build(Environment::Production)
                         .log_level(LoggingLevel::Off)
@@ -51,7 +54,7 @@ fn main() {
                     delay: args.delay,
                 })
                 .mount("/", routes![updates])
-                .mount("/", StaticFiles::from("static"))
+                .mount("/", StaticFiles::from(args.static_folder.clone()))
                 .launch();
                 eprintln!(
                     "Launch failed for file {} in port {}! Error: {}",

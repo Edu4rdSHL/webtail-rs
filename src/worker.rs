@@ -29,7 +29,7 @@ impl Read for File {
 
         self.data.clear();
 
-        self.data += &format!("data: Watching file {}\ndata: \n", self.name);
+        self.data += &format!("data: Watching file \"{}\"\ndata: \n", self.name);
 
         for line in utils::return_bufreader(&self.name).lines() {
             self.data += &format!("data: {}\n", line.expect("Error"))

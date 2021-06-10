@@ -4,6 +4,7 @@ pub struct Args {
     pub delay: u64,
     pub port: u16,
     pub config_file: String,
+    pub static_folder: String,
 }
 
 pub struct File {

@@ -14,5 +14,7 @@ pub fn get_args() -> Args {
         delay: value_t!(matches.value_of("delay"), u64).unwrap_or(1),
         port: value_t!(matches.value_of("port"), u16).unwrap_or(8080),
         config_file: value_t!(matches.value_of("config"), String).unwrap_or_default(),
+        static_folder: value_t!(matches.value_of("static-folder"), String)
+            .unwrap_or_else(|_| "/var/lib/webtail-rs/static".to_string()),
     }
 }
