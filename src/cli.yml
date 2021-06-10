@@ -1,0 +1,34 @@
+name: webtail-rs
+author: Eduard Tolosa <edu4rdshl@protonmail.com>
+settings:
+  - ArgRequiredElseHelp
+  - StrictUtf8
+about: tail -f for your browser.
+args:
+  - file:
+      short: f
+      long: file
+      help: File to follow.
+      takes_value: true
+      multiple: false
+
+  - delay:
+      short: d
+      long: delay
+      help: Time between reads.
+      takes_value: true
+      multiple: false
+
+  - port:
+      short: p
+      long: port
+      help: Port to use.
+      takes_value: true
+      multiple: false
+
+  - config:
+      short: c
+      long: config
+      help: Config file to use. You can use the path:port syntax for viewing multiple files.
+      takes_value: true
+      multiple: false
